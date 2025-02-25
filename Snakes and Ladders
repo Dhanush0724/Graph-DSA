@@ -1,0 +1,28 @@
+class Solution:
+    def snakesAndLadders(self, board: List[List[int]]) -> int:
+        n = len(board)
+        board.reverse()
+        def pos(square):
+            
+            r = (square-1)//n
+            c = (square-1)%n
+            if r%2:
+                c = n-1-c
+            return [r,c]
+
+        q = deque([(1,0)])
+        visit = set()
+        while q :
+            square,moves = q.popleft()
+            for i in range(1,7):
+                next_sq = square + i
+                r,c = pos(next_sq)
+                if board[r][c] != -1:
+                    next_sq = board[r][c]
+                if next_sq == n*n:
+                    return moves+1
+                if next_sq not in visit:
+                    visit.add(next_sq)
+                    q.append((next_sq,moves+1))
+        return -1      
+        
