@@ -1,0 +1,26 @@
+class Solution:
+    def minReorder(self, n: int, connections: List[List[int]]) -> int:
+
+        edges = set(map(tuple,connections))
+        neighbours  = {city:[] for city in range(n)}
+        visited = set()
+        reverse = 0
+
+        for a,b in connections:
+            neighbours[a].append(b)
+            neighbours[b].append(a)
+        
+        def dfs(city):
+            nonlocal reverse
+
+            for nei in neighbours[city]:
+                if nei in visited:
+                    continue
+                if(nei,city) not in edges:
+                    reverse+=1
+                visited.add(nei)
+                dfs(nei)
+        visited.add(0)
+        dfs(0)
+        return reverse
+        
