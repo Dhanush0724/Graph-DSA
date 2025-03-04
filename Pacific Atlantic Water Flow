@@ -1,0 +1,30 @@
+class Solution:
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        
+        n = len(heights)
+        m = len(heights[0])
+        atlantic = set()
+        pacific = set()
+
+        def dfs(r,c,visit,prevHeight):
+            if ((r,c) in visit or not (0<=r<n) or not (0<=c<m) or heights[r][c]<prevHeight):
+                return
+            visit.add((r,c))
+            for dr,dc in [(-1,0),(0,-1),(0,1),(1,0)]:
+                nr,nc = r + dr , c + dc
+                dfs(nr,nc,visit,heights[r][c])
+
+        for c in range(m):
+            dfs(0,c,pacific,heights[0][c])
+            dfs(n-1,c,atlantic,heights[n-1][c])
+        
+        for r in range(n):
+            dfs(r,0,pacific,heights[r][0])
+            dfs(r,m-1,atlantic,heights[r][m-1])
+
+        res = []
+        for r in range(n):
+            for c in range(m):
+                if (r,c) in pacific and (r,c) in atlantic:
+                    res.append([r,c])
+        return res
