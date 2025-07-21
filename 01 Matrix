@@ -1,0 +1,23 @@
+class Solution:
+    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+
+        q = deque()
+        n = len(mat)
+        m = len(mat[0])
+        for i in range(n):
+            for j in range(m):
+                if mat[i][j] == 0 :
+                    q.append((i,j))
+                else :
+                    mat[i][j] = -1
+        while q :
+            i,j = q.popleft()
+            for dr,dc in [(-1,0),(1,0),(0,1),(0,-1)]:
+                nr,nc = dr+i,dc+j
+                if 0<=nr<n and 0<=nc<m and mat[nr][nc] == -1:
+                    mat[nr][nc] = mat[i][j] +1
+                    q.append((nr,nc))
+        return mat
+
+
+        
