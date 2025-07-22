@@ -1,0 +1,18 @@
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        
+        adj = defaultdict(list)
+        for src,dest,wei in times:
+            adj[src].append((dest,wei))
+        sortest = {}
+        min_heap = [(0,k)]
+        
+        while min_heap:
+            w1,n1 = heapq.heappop(min_heap)
+            if n1 in sortest:
+                continue
+            sortest[n1] = w1
+
+            for n2,w2 in adj[n1]:
+                heapq.heappush(min_heap,[w1+w2,n2])
+        return max(sortest.values()) if len(sortest) == n else -1
