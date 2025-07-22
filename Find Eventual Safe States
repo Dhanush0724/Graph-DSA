@@ -1,0 +1,22 @@
+class Solution:
+    def eventualSafeNodes(self, graph: List[List[int]]) -> List[int]:
+        
+        rev_graph = defaultdict(list)
+        outdegree = [0]*len(graph)
+        for u in range(len(graph)):
+            for v in graph[u]:
+                rev_graph[v].append(u)
+                outdegree[u]+=1
+        q = deque()
+        for i in range(len(outdegree)):
+            if outdegree[i] == 0 :
+                q.append(i)
+        res = []
+        while q :
+            node = q.popleft()
+            res.append(node)
+            for nei in rev_graph[node]:
+                outdegree[nei]-=1
+                if outdegree[nei] == 0:
+                    q.append(nei)
+        return sorted(res)
