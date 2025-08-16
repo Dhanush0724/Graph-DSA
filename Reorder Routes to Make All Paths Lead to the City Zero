@@ -1,6 +1,28 @@
 class Solution:
     def minReorder(self, n: int, connections: List[List[int]]) -> int:
 
+    class Solution:
+    def minReorder(self, n: int, connections: List[List[int]]) -> int:
+
+        graph = defaultdict(list)
+        for u,v in connections:
+            graph[u].append((v,1))
+            graph[v].append((u,0))
+        
+        visited = set([0])
+        queue = deque([0])
+        res = 0
+        while queue:
+            node = queue.popleft()
+            for nei,cost in graph[node]:
+                if nei not in visited:
+                    visited.add(nei)
+                    res+=cost
+                    queue.append(nei)
+        return res
+
+        
+
         edges = set(map(tuple,connections))
         neighbours  = {city:[] for city in range(n)}
         visited = set()
